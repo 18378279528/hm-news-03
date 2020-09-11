@@ -33,14 +33,13 @@
 // import axios from "axios";
 export default {
   created() {
-    console.log(this.$route.params);
-    this.username = this.$route.params.username;
-    this.password = this.$route.params.password;
+    // this.username = this.$route.params.username;
+    // this.password = this.$route.params.password;
   },
   data() {
     return {
-      username: "",
-      password: "",
+      username: "10086",
+      password: "123456",
       rules: {
         username: [
           { required: true, message: "请填写用户名", trigger: "onChange" },
@@ -58,7 +57,8 @@ export default {
     };
   },
   methods: {
-    async login(values) {
+    // 登录请求
+    async login() {
       const res = await this.$axios.post("/login", {
         username: this.username,
         password: this.password,
@@ -66,6 +66,8 @@ export default {
       const { statusCode, data, message } = res.data;
       if (statusCode === 200) {
         this.$toast.success(message);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.user.id);
         this.$router.push("/user");
       } else {
         this.$toast("账号密码错误");
